@@ -1,9 +1,12 @@
-exports.getUsers = (req,res) => {
-    console.log("usernames will be logged here - wip")
-    res.send("Welcome")
+const db = require("../db/queries");
+
+async function getUsers (req,res) {
+    const usernames = await db.getAllUsernames();
+    console.log("Usernames: ", usernames);
+    res.send("Usernames: " + usernames.map(user => user.username).join(", "));
 }
 
-exports.addUserForm = (req,res) => {
+function addUserForm (req,res) {
     res.send(`<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +23,14 @@ exports.addUserForm = (req,res) => {
 </html>`)
 }
 
-exports.addUser = (req,res) => {
-    console.log("username to be saved: ", req.body.username)
-    res.send("Added")
+async function addUser (req,res) {
+    const { username } = req.body;
+    await db.insertUsername(username);
+    res.redirect("/");
+}
+
+module.exports = {
+    getUsers,
+    addUserForm,
+    addUser,
 }
