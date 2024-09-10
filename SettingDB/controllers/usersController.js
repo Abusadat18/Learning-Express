@@ -1,7 +1,6 @@
 const db = require("../db/queries");
 
 async function getUsers (req,res) {
-    console.log(req.query);
     let usernames;
     if (req.query.hasOwnProperty('search')) {
         usernames = await db.searchUsername(req.query.search.trim());
@@ -36,8 +35,14 @@ async function addUser (req,res) {
     res.redirect("/");
 }
 
+async function deleteAllUsers (req,res){
+    await db.truncateTable();
+    res.redirect("/");
+}
+
 module.exports = {
     getUsers,
     addUserForm,
     addUser,
+    deleteAllUsers,
 }

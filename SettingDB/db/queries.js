@@ -14,8 +14,13 @@ async function insertUsername(username) {
   await pool.query("INSERT INTO usernames (username) VALUES ($1)", [username]);
 }
 
+async function truncateTable(){
+  await pool.query("TRUNCATE TABLE usernames");
+}
+
 module.exports = {
   getAllUsernames,
   insertUsername,
-  searchUsername
+  searchUsername,
+  truncateTable,
 }
